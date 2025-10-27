@@ -22,12 +22,21 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             padding: 20px;
+            margin: 0;
             color: var(--tg-theme-text-color);
             background-color: var(--tg-theme-bg-color);
         }
         .container {
             max-width: 390px;
             margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        p {
+            font-size: 16px;
+            color: var(--tg-theme-hint-color); /* Используем цвет для подсказок */
         }
         button {
             display: block;
@@ -60,34 +69,39 @@
     <script>
         // ШАГ 3: РАБОТА С TELEGRAM API В JAVASCRIPT
 
-        // 1. Получаем объект Web App
-        const tg = window.Telegram.WebApp;
+        // 1. Получаем объект Web App. Делаем это внутри обработчика,
+        // чтобы быть уверенными, что всё загрузилось.
+        document.addEventListener('DOMContentLoaded', function() {
+            const tg = window.Telegram.WebApp;
 
-        // 2. Расширяем Web App на всю высоту
-        tg.expand();
+            // 2. Расширяем Web App на всю высоту
+            tg.expand();
 
-        // 3. Находим нашу кнопку по id
-        const orderBtn = document.getElementById('order-btn');
+            // 3. Находим нашу кнопку по id
+            const orderBtn = document.getElementById('order-btn');
 
-        // 4. Вешаем обработчик события 'click' на кнопку
-        orderBtn.addEventListener('click', () => {
-            // Формируем данные, которые хотим отправить боту.
-            // Это обычный JavaScript-объект.
-            const data = {
-                action: 'new_order_test',
-                from: 'ул. Тверская, 1',
-                to: 'ул. Арбат, 10',
-                timestamp: new Date().toISOString()
-            };
+            // 4. Вешаем обработчик события 'click' на кнопку
+            orderBtn.addEventListener('click', () => {
+                // --- ОТЛАДКА ---
+                // Показываем всплывающее окно перед отправкой данных.
+                alert("Нажата кнопка! Сейчас буду отправлять данные.");
 
-            // 5. Отправляем данные боту.
-            // ВАЖНО: метод sendData принимает только СТРОКУ.
-            // Поэтому мы преобразуем наш объект `data` в JSON-строку.
-            tg.sendData(JSON.stringify(data));
-            
-            // После отправки данных можно, например, закрыть Web App.
-            // Раскомментируйте строку ниже, если хотите, чтобы окно закрывалось сразу.
-            // tg.close();
+                // Формируем данные, которые хотим отправить боту.
+                const data = {
+                    action: 'new_order_test',
+                    from: 'ул. Тверская, 1',
+                    to: 'ул. Арбат, 10',
+                    timestamp: new Date().toISOString()
+                };
+
+                // --- ОТЛАДКА ---
+                // Показываем, какие именно данные мы отправляем.
+                alert("Данные для отправки:\n" + JSON.stringify(data, null, 2));
+
+                // 5. Отправляем данные боту.
+                // ВАЖНО: метод sendData принимает только СТРОКУ.
+                tg.sendData(JSON.stringify(data));
+            });
         });
 
     </script>
