@@ -1,31 +1,28 @@
 import logging
-from telegram import Update
-from telegram.ext import Application, MessageHandler, filters, ContextTypes
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+from telegram.ext import Application, CommandHandler, ContextTypes
 from config import TOKEN
 
-# Настраиваем логирование
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
-logger = logging.getLogger(__name__)
+logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 
-# URL оставляем тот же, что и был (от serveo.net)
-WEB_APP_URL = "https://visionary-tulumba-a32deb.netlify.app" # Убедитесь, что ссылка актуальна
+WEB_APP_URL = "https://mrzelus.github.io/Marfino/" # Ваша ссылка на GitHub Pages
 
-async def web_app_data_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Единственный обработчик, который ловит данные от Web App."""
-    logger.info("--- WEB APP HANDLER СРАБОТАЛ ---")
-    logger.info(f"Получены данные: {update.message.web_app_data.data}")
-    await update.message.reply_text("Я получил данные от Web App!")
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Отправляет кнопку для открытия Web App-визитки."""
+    keyboard = [
+        [InlineKeyboardButton("ℹ️ Информация и правила", web_app=WebAppInfo(url=WEB_APP_URL))]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text(
+        "Добро пожаловать! Нажмите кнопку ниже, чтобы ознакомиться с правилами и тарифами.",
+        reply_markup=reply_markup
+    )
 
 def main() -> None:
-    """Основная функция с одним-единственным обработчиком."""
-    print("Запускаю бота в МИНИМАЛИСТИЧНОМ режиме...")
+    """Запускает бота."""
     application = Application.builder().token(TOKEN).build()
-
-    # Регистрируем ТОЛЬКО ОДИН обработчик
-    application.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, web_app_data_handler))
-
+    application.add_handler(CommandHandler("start", start))
+    print("Бот-визитка запущен...")
     application.run_polling()
 
 if __name__ == "__main__":
