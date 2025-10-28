@@ -3,38 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Pages Test</title>
-
-    <!-- 1. Подключаем официальный скрипт Telegram -->
+    <title>Backend Function Test</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+    <style>
+        body { font-family: sans-serif; padding: 10px; }
+        button { width: 100%; padding: 15px; margin-bottom: 10px; font-size: 16px; }
+    </style>
 </head>
 <body>
+    <h1>Backend Function Test</h1>
+    <p>Нажмите на кнопки ниже, чтобы отправить боту команды или текст.</p>
 
-    <h1>GitHub Pages Deployment Test</h1>
-    <p>This page is hosted on GitHub Pages. Press the button below.</p>
+    <!-- Кнопка, которая должна вызвать web_app_data_handler -->
+    <button id="btn-send-data">1. Test sendData()</button>
 
-    <!-- 2. Создаем кнопку -->
-    <button id="test-btn">Send Data to Bot</button>
+    <!-- Кнопка, которая отправит обычный текст, как будто его написал пользователь -->
+    <button id="btn-query-text">2. Test sending text (for echo_message)</button>
+    
+    <!-- Кнопка, которая отправит команду /help -->
+    <button id="btn-query-command">3. Test sending a command (for help_command)</button>
 
     <script>
-        // 3. Добавляем JavaScript-логику
         document.addEventListener('DOMContentLoaded', function() {
-            try {
-                let tg = window.Telegram.WebApp;
-                tg.ready();
+            let tg = window.Telegram.WebApp;
+            tg.ready();
 
-                let btn = document.getElementById('test-btn');
-                btn.addEventListener('click', function() {
-                    // Отправляем строку, соответствующую хостингу
-                    tg.sendData("test_from_github_pages_01");
-                });
+            // --- Тест 1: стандартная отправка данных ---
+            document.getElementById('btn-send-data').addEventListener('click', function() {
+                tg.sendData("test_from_github_pages_02");
+            });
 
-            } catch (e) {
-                document.body.innerHTML = "Error: " + e.message;
-            }
+            // --- Тест 2: отправка обычного текста ---
+            // Этот метод появился в версии 6.9 Web App API
+            document.getElementById('btn-query-text').addEventListener('click', function() {
+                // Это отправит в чат сообщение "Hello from Web App" от имени пользователя
+                tg.switchInlineQuery("Hello from Web App", true);
+            });
+
+            // --- Тест 3: отправка команды ---
+            document.getElementById('btn-query-command').addEventListener('click', function() {
+                // Это отправит в чат сообщение "/help" от имени пользователя
+                tg.switchInlineQuery("/help", true);
+            });
         });
     </script>
-
 </body>
 </html>
