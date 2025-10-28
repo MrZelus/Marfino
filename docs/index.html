@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Marfino Taxi</title>
+  <title>Marfino Taxi - Информация и Оплата</title>
   
-  <!-- 1. Подключаем скрипт Telegram для интеграции -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+  
   <style>
-    /* 
+    /*
        Используем переменные Telegram для автоматической подстройки под тему.
-       Если скрипт не загрузится, будут использованы значения по умолчанию (например, #0B0F17).
+       Если скрипт не загрузится, будут использованы значения по умолчанию.
     */
     :root {
       --tg-bg: var(--tg-theme-bg-color, #0B0F17);
       --tg-card: var(--tg-theme-secondary-bg-color, #10151F);
       --tg-text: var(--tg-theme-text-color, #FFFFFF);
       --tg-hint: var(--tg-theme-hint-color, #C5C9D9);
+      --tg-link: var(--tg-theme-link-color, #8774E1);
       --tg-button: var(--tg-theme-button-color, #C66BD5);
       --tg-button-text: var(--tg-theme-button-text-color, #FFFFFF);
       --accent-gradient: linear-gradient(81deg, #FA5560 -23%, #B14BF4 45%, #4D91FF 115%);
@@ -32,7 +32,7 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding-bottom: 80px; /* Оставляем место для футера и главной кнопки */
+      padding: 0 1rem 80px 1rem; /* Отступы по бокам и снизу */
       box-sizing: border-box;
     }
 
@@ -43,21 +43,34 @@
       padding: 1rem 0;
       font-size: 1.5rem;
       font-weight: bold;
-      color: white; /* На градиенте белый текст смотрится лучше всего */
+      color: white;
+      flex-shrink: 0; /* Шапка не будет сжиматься */
+    }
+
+    .content-wrapper {
+        width: 100%;
+        max-width: 500px;
     }
 
     .card {
       background: var(--tg-card);
       border-radius: 16px;
       padding: 1.5rem;
-      margin: 1rem;
-      width: 90%;
-      max-width: 500px;
+      margin-top: 1rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-
+    
     h2, h3 {
         margin-top: 0;
+    }
+
+    p, li {
+        line-height: 1.6;
+        color: var(--tg-hint);
+    }
+    
+    strong {
+        color: var(--tg-text);
     }
 
     .btn {
@@ -68,82 +81,119 @@
       border-radius: 12px;
       font-size: 1rem;
       font-weight: 600;
-      text-decoration: none; /* Убираем подчеркивание у ссылки */
+      text-decoration: none;
       cursor: pointer;
       transition: transform 0.2s ease;
-      display: block; /* Заставляем кнопку занимать всю ширину */
+      display: block;
       margin-top: 1rem;
       text-align: center;
     }
 
     .btn:hover {
-      transform: scale(1.03); /* Небольшой эффект при наведении */
+      transform: scale(1.02);
     }
 
-    .news {
-      margin-top: 1rem;
+    .footer-links {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    .footer-links a {
+      color: var(--tg-link);
+      text-decoration: none;
+      margin: 0 10px;
     }
 
-    .news-item {
-      background: var(--tg-bg); /* Используем основной фон для контраста */
-      border-radius: 10px;
-      padding: 1rem;
-      margin-bottom: 10px;
-      color: var(--tg-hint);
+    .rekvizity {
+      font-size: 0.9rem;
+      word-wrap: break-word; /* Перенос длинных строк, например ИНН */
     }
     
+    .rekvizity p {
+        font-size: inherit; /* Наследуем размер шрифта родителя */
+    }
+
+    .rekvizity a {
+        color: var(--tg-link) !important; /* Делаем ссылки в реквизитах всегда кликабельными */
+    }
+
     footer {
-      position: fixed; /* Фиксируем футер внизу */
-      bottom: 0;
       width: 100%;
       text-align: center;
       font-size: 0.8rem;
       color: var(--tg-hint);
-      padding: 1rem 0;
-      background: var(--tg-bg);
+      padding: 1.5rem 0;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
   <header>🚖 Marfino Taxi</header>
-
-  <div class="card">
-    <h2>Тариф “Город”</h2>
-    <p>Минимум — <b>250 ₽</b> (включает подачу и первые 3 км пути).<br>Далее — <b>25 ₽/км</b>.</p>
+  
+  <div class="content-wrapper">
     
-    <!-- 2. Используем тег <a> для ссылки, стилизуя его как кнопку .btn -->
-    <a href="https://t.me/Dostavvka" class="btn">
-      📞 Связаться с водителем
-    </a>
-  </div>
-
-  <div class="card">
-    <h3>📰 Новости и информация</h3>
-    <div class="news">
-      <div class="news-item">💡 Бесплатная зарядка для вашего телефона в каждой поездке — просто попросите!</div>
-      <div class="news-item">📦 Доступна услуга "Курьер" для доставки небольших посылок по городу.</div>
+    <!-- Блок с описанием услуги -->
+    <div class="card">
+      <h2>Как заказать и оплатить</h2>
+      <p>
+        1. Нажмите кнопку "📞 Связаться с водителем", чтобы обсудить детали поездки (адрес, время).<br>
+        2. После согласования финальной стоимости, вернитесь на эту страницу и нажмите "Перейти к оплате".<br>
+        3. Услуга считается оказанной в момент прибытия в конечный пункт назначения.
+      </p>
+       <a href="https://t.me/Dostavvka" class="btn">
+          📞 Связаться с водителем
+        </a>
     </div>
+
+    <!-- Блок с тарифами -->
+    <div class="card">
+      <h2>💰 Наши тарифы</h2>
+      <p><strong>Город:</strong> от 250 ₽ (включает подачу и первые 3 км пути).<br>Далее — <strong>25 ₽/км</strong>.</p>
+      <p><strong>Межгород:</strong> от 35 ₽/км (стоимость обсуждается индивидуально).</p>
+    </div>
+
+    <!-- Блок оплаты -->
+    <div class="card">
+      <h2>💳 Оплата услуг</h2>
+      <p>Вы можете оплатить согласованную поездку онлайн. Сумму необходимо будет ввести на странице оплаты.</p>
+      <a href="ВАША_ССЫЛКА_НА_ОПЛАТУ_ЮКАSSА" target="_blank" class="btn">
+        Перейти к оплате
+      </a>
+    </div>
+
+    <!-- Блок для юридической информации -->
+    <div class="card rekvizity" id="rekvizity">
+      <h3>Контакты и реквизиты</h3>
+      <p>
+        <strong>Индивидуальный предприниматель:</strong> <!-- ВАШЕ ФИО --> <br>
+        <strong>ИНН:</strong> <!-- ВАШ ИНН --> <br>
+        <strong>ОГРНИП:</strong> <!-- ВАШ ОГРНИП --> <br>
+        <br>
+        <strong>Служба поддержки:</strong><br>
+        <strong>Email:</strong> <!-- ВАШ_EMAIL@example.com --> <br>
+        <strong>Telegram:</strong> <a href="https://t.me/Dostavvka">@Dostavvka</a>
+      </p>
+      <div class="footer-links">
+        <a href="https://mrzelus.github.io/Marfino/oferta.html" target="_blank">Публичная оферта</a>
+      </div>
+    </div>
+    
   </div>
 
   <footer>© 2025 Marfino Taxi | Powered by Python & Termux</footer>
 
-  <!-- 3. Добавляем JavaScript для интеграции с Telegram -->
   <script>
       document.addEventListener('DOMContentLoaded', function() {
           try {
               let tg = window.Telegram.WebApp;
-              tg.ready(); // Сообщаем Telegram, что приложение готово
-
-              // Настраиваем главную кнопку внизу Web App
+              tg.ready();
+              
+              // Настраиваем главную кнопку внизу Web App для удобного закрытия
               tg.MainButton.setText("Закрыть");
               tg.MainButton.show();
-              
-              // При нажатии на нее - просто закрываем Web App
               tg.MainButton.onClick(function() {
                   tg.close();
               });
           } catch (e) {
-              // Если что-то пойдет не так со скриптом, мы не сломаем страницу
               console.error("Telegram Web App script error:", e);
           }
       });
