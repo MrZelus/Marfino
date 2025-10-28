@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netlify Test</title>
+    <title>GitHub Pages Test</title>
 
     <!-- 1. Подключаем официальный скрипт Telegram -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -11,35 +11,26 @@
 </head>
 <body>
 
-    <h1>Netlify Deployment Test</h1>
-    <p>This page is hosted on Netlify. Press the button below.</p>
+    <h1>GitHub Pages Deployment Test</h1>
+    <p>This page is hosted on GitHub Pages. Press the button below.</p>
 
     <!-- 2. Создаем кнопку -->
     <button id="test-btn">Send Data to Bot</button>
 
     <script>
         // 3. Добавляем JavaScript-логику
-
-        // Убедимся, что скрипт запускается после полной загрузки страницы
         document.addEventListener('DOMContentLoaded', function() {
             try {
-                // Получаем объект Web App
                 let tg = window.Telegram.WebApp;
-
-                // Сообщаем Telegram, что приложение готово к отображению
                 tg.ready();
 
-                // Находим нашу кнопку
                 let btn = document.getElementById('test-btn');
-
-                // Вешаем обработчик на нажатие кнопки
                 btn.addEventListener('click', function() {
-                    // Отправляем самую простую возможную строку данных
-                    tg.sendData("test_from_netlify_01");
+                    // Отправляем строку, соответствующую хостингу
+                    tg.sendData("test_from_github_pages_01");
                 });
 
             } catch (e) {
-                // Если произойдет ошибка, мы хотя бы увидим ее
                 document.body.innerHTML = "Error: " + e.message;
             }
         });
