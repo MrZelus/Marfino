@@ -1,51 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backend Function Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Информация о Marfino Taxi</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 10px; }
-        button { width: 100%; padding: 15px; margin-bottom: 10px; font-size: 16px; }
+        :root {
+            --tg-bg: var(--tg-theme-bg-color, #ffffff);
+            --tg-text: var(--tg-theme-text-color, #000000);
+            --tg-hint: var(--tg-theme-hint-color, #999999);
+            --tg-link: var(--tg-theme-link-color, #2481cc);
+            --tg-button: var(--tg-theme-button-color, #5288c1);
+            --tg-button-text: var(--tg-theme-button-text-color, #ffffff);
+            --section-bg: var(--tg-theme-secondary-bg-color, #f3f3f3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background-color: var(--tg-bg);
+            color: var(--tg-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--tg-hint);
+            margin: 0;
+        }
+
+        .section {
+            background-color: var(--section-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .section ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .section ul li {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .contact-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            background-color: var(--tg-button);
+            color: var(--tg-button-text);
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h1>Backend Function Test</h1>
-    <p>Нажмите на кнопки ниже, чтобы отправить боту команды или текст.</p>
 
-    <!-- Кнопка, которая должна вызвать web_app_data_handler -->
-    <button id="btn-send-data">1. Test sendData()</button>
+    <div class="container">
+        
+        <div class="header">
+            <h1>🚖 Marfino Taxi</h1>
+            <p>Ваш надежный сервис для поездок</p>
+        </div>
 
-    <!-- Кнопка, которая отправит обычный текст, как будто его написал пользователь -->
-    <button id="btn-query-text">2. Test sending text (for echo_message)</button>
-    
-    <!-- Кнопка, которая отправит команду /help -->
-    <button id="btn-query-command">3. Test sending a command (for help_command)</button>
+        <div class="section">
+            <h2>📜 Правила для пассажиров</h2>
+            <ul>
+                <li>🚭 В салоне автомобиля строго запрещено курить.</li>
+                <li>🐾 Перевозка животных осуществляется только в специальных переносках.</li>
+                <li>🧳 Пожалуйста, сообщайте о крупногабаритном багаже заранее.</li>
+                <li>🧒 Дети до 7 лет перевозятся только в детском кресле.</li>
+                <li> belted_soon: Используйте ремни безопасности во время всей поездки.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>💰 Наши тарифы</h2>
+            <p><strong>Город:</strong> от 150 ₽ (включая 3 км)</p>
+            <p><strong>Межгород:</strong> от 35 ₽/км (обсуждается индивидуально)</p>
+        </div>
+
+        <div class="section">
+            <h2>📞 Связаться с нами</h2>
+            <p>По всем вопросам вы можете написать водителю напрямую.</p>
+            <!-- Эта кнопка будет работать только если вы укажете свой юзернейм -->
+            <a href="https://t.me/Dostavvka" class="contact-button">Написать водителю</a>
+        </div>
+
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let tg = window.Telegram.WebApp;
-            tg.ready();
-
-            // --- Тест 1: стандартная отправка данных ---
-            document.getElementById('btn-send-data').addEventListener('click', function() {
-                tg.sendData("test_from_github_pages_02");
-            });
-
-            // --- Тест 2: отправка обычного текста ---
-            // Этот метод появился в версии 6.9 Web App API
-            document.getElementById('btn-query-text').addEventListener('click', function() {
-                // Это отправит в чат сообщение "Hello from Web App" от имени пользователя
-                tg.switchInlineQuery("Hello from Web App", true);
-            });
-
-            // --- Тест 3: отправка команды ---
-            document.getElementById('btn-query-command').addEventListener('click', function() {
-                // Это отправит в чат сообщение "/help" от имени пользователя
-                tg.switchInlineQuery("/help", true);
+            
+            // Настраиваем главную кнопку внизу Web App
+            tg.MainButton.setText("Понятно, закрыть");
+            tg.MainButton.show();
+            
+            // При нажатии на нее - просто закрываем Web App
+            tg.MainButton.onClick(function() {
+                tg.close();
             });
         });
     </script>
+
 </body>
 </html>
